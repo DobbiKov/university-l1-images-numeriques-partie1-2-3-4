@@ -1,9 +1,14 @@
 # Documentation for pbm-tout-en-un-documentaion
 This file operates with PBM images and contains these functions:
-- [lirePBM](#lirePBM)
-- [ecrirePBM](#ecrirePBM)
-- [affichePBM](#affichePBM)
-- [inversePBM](#inversePBM)
+- [Documentation for pbm-tout-en-un-documentaion](#documentation-for-pbm-tout-en-un-documentaion)
+  - [lirePBM](#lirepbm)
+    - [Example:](#example)
+  - [ecrirePBM](#ecrirepbm)
+    - [Example:](#example-1)
+  - [affichePBM](#affichepbm)
+    - [Example:](#example-2)
+  - [inversePBM](#inversepbm)
+    - [Example:](#example-3)
 
 ## lirePBM
 `ImageNB lirePBM(string source)`
