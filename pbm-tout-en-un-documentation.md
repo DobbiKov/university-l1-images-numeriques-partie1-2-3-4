@@ -10,6 +10,9 @@ This file operates with PBM images and contains these functions:
   - [inversePBM](#inversepbm)
     - [Example:](#example-3)
 
+In order to compile and execute c++ file you can use execute.sh script.
+For example: `./execute.sh pbm-tout-en-un` will compile and execute the file pbm-tout-en-un.cpp.
+
 ## lirePBM
 `ImageNB lirePBM(string source)`
 
