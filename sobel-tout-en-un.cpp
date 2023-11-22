@@ -87,7 +87,7 @@ void ecrirePGM(ImageGris img, string cible) {
         throw runtime_error("The array is empty");
     int heigth = img.size();
     int width = img[0].size();
-    file << "P3\n";
+    file << "P2\n";
     file << width << " " << heigth << endl;
     file << "255\n";
     for(vector<double> ligne : img){
