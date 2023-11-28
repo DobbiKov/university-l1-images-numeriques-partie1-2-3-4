@@ -57,7 +57,7 @@ ImageGris lirePGM(string source) {
     colonne = 0;
     while(file >> value){
 
-        tab[ligne][colonne] = value;
+        tab[ligne][colonne] = (value / colors) * 255;
 
         colonne++;
         if(colonne >= width){
@@ -92,7 +92,7 @@ void ecrirePGM(ImageGris img, string cible) {
     file << "255\n";
     for(vector<double> ligne : img){
         for(double elem : ligne){
-            file << (int)elem << " ";
+            file << (int)(elem) << " ";
         }
         file << endl;
     }
