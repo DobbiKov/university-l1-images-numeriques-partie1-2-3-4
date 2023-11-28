@@ -1,1 +1,1 @@
-clang++ -std=c++11 -Wall $1.cpp -o $1 && ./$1
+clang++ -std=c++11 -Wall $1.cpp -o ./build/$1 && ./build/$1
