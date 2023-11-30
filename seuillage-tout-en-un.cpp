@@ -141,7 +141,6 @@ ImageGris seuillage(ImageGris img, int seuil) {
         new_image[i] = vector<double>(img[i].size());
     }
 
-    double biggest_number  = findTheBiggestNumber(img);
     for(int i = 0; i < new_image.size(); i++){
         for(int j = 0; j < new_image[i].size(); j++){
             new_image[i][j] = 
@@ -173,6 +172,7 @@ ImageGris doubleSeuillage(ImageGris imgIntensite, ImageGris imgContour, int seui
         throw runtime_error("The image is empty!");
     if(imgIntensite.size() != imgContour.size() || imgIntensite[0].size() != imgContour[0].size())
         throw runtime_error("Two different images are given!");
+
     ImageGris new_image = ImageGris(imgIntensite.size());
     for(int i = 0; i < new_image.size(); i++){
         new_image[i] = vector<double>(imgIntensite[i].size());
@@ -185,6 +185,8 @@ ImageGris doubleSeuillage(ImageGris imgIntensite, ImageGris imgContour, int seui
                 new_image[i][j] = 255.0;
                 continue;
             }
+            if( !isPixelSelected(imgContour[i][j]) )
+                continue;
             if(i > 0){
                 if( isPixelSelected(imgContour[i-1][j] ) ) {
                     new_image[i][j] = 0;
@@ -275,8 +277,8 @@ void seuillageTest() {
 
 
     cout << "Vérifier que les images obtenues dans 'seuillage/' sont semblables à celles fournies dans 'seuillage/correction/'" << endl;
-    ecrirePGM(seuillage(intensite(lirePGM("images/Billes.256.pgm")), 80), "seuillage/Billes.256.pgm");
-    ecrirePGM(seuillage(intensite(lirePGM("images/Willis.512.pgm"  )), 110), "seuillage/Willis.512.pgm");
+    ecrirePGM(seuillage(intensite( lissage(lirePGM("images/Billes.256.pgm")) ), 80), "seuillage/Billes.256.pgm");
+    ecrirePGM(seuillage(intensite( lissage(lirePGM("images/Willis.512.pgm")) ), 110), "seuillage/Willis.512.pgm");
     cout << "\tProposer des seuils pour Embryos.512.pgm et House.256.pgm" << endl;
 
 
@@ -287,14 +289,15 @@ void seuillageTest() {
 
 void doubleSeuillageTest(){
     cout << "Vérifier que les images obtenues dans 'seuillage_double/' sont semblables à celles fournies dans 'seuillage_double/correction/'" << endl;
-    ecrirePGM(doubleSeuillage(lirePGM("images/Willis.512.pgm"), seuillage(intensite(lirePGM("images/Willis.512.pgm")), 100), 80), "seuillage_double/Willis.512.pgm");
-    ecrirePGM(doubleSeuillage(lirePGM("images/Billes.256.pgm"), seuillage(intensite(lirePGM("images/Billes.256.pgm")), 100), 80), "seuillage_double/Billes.256.pgm");
+    ecrirePGM(doubleSeuillage(lirePGM("images/Willis.512.pgm"), seuillage(intensite( lissage(lirePGM("images/Willis.512.pgm")) ), 100), 80), "seuillage_double/Willis.512.pgm");
+    ecrirePGM(doubleSeuillage(lirePGM("images/Billes.256.pgm"), seuillage(intensite( lissage(lirePGM("images/Billes.256.pgm")) ), 100), 80), "seuillage_double/Billes.256.pgm");
     cout << "\tProposer des seuils pour Embryos.512.pgm et House.256.pgm" << endl;
 }
 
 void doubleSeuillageIteratifTest() {
+    //il n'y a pas d'yeux quand on utlisie la fonction lissage avec doubleSeuillageIteratif
     cout << "Vérifier que les images obtenues dans 'seuillage_double/' sont semblables à celles fournies dans 'seuillage_double/correction/'" << endl;
-    ecrirePGM(doubleSeuillage(intensite(lirePGM("images/Willis.512.pgm")), 500, 80, 100), "seuillage_double/iteratif_Willis.512.pgm");
+    ecrirePGM(doubleSeuillage(intensite( lissage(lirePGM("images/Willis.512.pgm")) ), 500, 80, 100), "seuillage_double/iteratif_Willis.512.pgm");
 
     cout << "\tProposer des seuils pour Billes.256.pgm, Embryos.512.pgm et House.256.pgm" << endl;
     

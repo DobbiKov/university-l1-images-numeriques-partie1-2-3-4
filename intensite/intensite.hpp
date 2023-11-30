@@ -5,6 +5,12 @@ using namespace std;
 
 typedef vector< vector<double> > ImageGris;
 
+/** lissage 
+ * @param img une image
+ * @return une image lissé
+**/
+ImageGris lissage(ImageGris img);
+
 /** filtre de Sobel horizontal
  * @param img une image en teintes de gris
  * @return une image en teintes de gris de l'intensite horizontale de img
