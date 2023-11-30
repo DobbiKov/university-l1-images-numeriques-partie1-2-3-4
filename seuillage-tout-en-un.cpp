@@ -9,6 +9,9 @@
 #include <stdexcept>
 #include <iostream>
 #include <fstream>
+
+#include "iopgm/iopgm.hpp"
+#include "intensite/intensite.hpp"
 using namespace std;
 
 /** Structure de donnee pour representer une image en teintes de gris **/
@@ -34,37 +37,6 @@ ImageGris imgGrisRenorm = {
     {0, 50, 0, 50},
     {0, 50, 0, 50},
 };
-
-
-/** filtre de Sobel
- * @param img une image en teintes de gris
- * @return une image en teintes de gris de l'intensite de img
- **/
-ImageGris intensite(ImageGris img) {
-    // Remplacez cette ligne et la suivante par le code adéquat
-    throw runtime_error("Fonction intensite non implantée ligne 45");
-}
-
-
-/** Construire une image en teintes de gris depuis un fichier PGM
- * @param source le nom d'un fichier PGM
- * @return une image en teintes de gris
- **/
-ImageGris lirePGM(string source) {
-    // Remplacez cette ligne et la suivante par le code adéquat
-    throw runtime_error("Fonction lirePGM non implantée ligne 55");
-}
-
-
-
-/** Ecrit une image en teintes de gris dans un fichier PGM
- * @param img une image en teintes de gris
- * @param cible le nom d'un fichier PGM
- **/
-void ecrirePGM(ImageGris img, string cible) {
-    // Remplacez cette ligne et la suivante par le code adéquat
-    throw runtime_error("Fonction ecrirePGM non implantée ligne 66");
-}
 
 /** Teste si deux images en teintes de gris sont égales modulo imprécision numérique
  * En cas de différence un message est affiché
@@ -93,6 +65,21 @@ bool ImageGrisEgal(ImageGris a, ImageGris b, float precision) {
     return true;
 }
 
+double findTheBiggestNumber(ImageGris img){
+    if( img.size() == 0 )
+        throw runtime_error("The image is empty!");
+    if( img[0].size() == 0 )
+        throw runtime_error("The image is empty!");
+
+    double biggest = img[0][0];
+    for(vector<double> ligne: img){
+        for(double element: ligne){
+            if( element > biggest )
+                biggest = element;
+        }
+    }
+    return biggest;
+}
 
 /// BEGIN renormalise
 
@@ -101,9 +88,26 @@ bool ImageGrisEgal(ImageGris a, ImageGris b, float precision) {
  * @return une image en teintes de gris
  **/
 ImageGris renormalise(ImageGris img) {
-    // Remplacez cette ligne et la suivante par le code adéquat
-    throw runtime_error("Fonction renormalise non implantée ligne 105");
+    if( img.size() == 0 )
+        throw runtime_error("The image is empty!");
+    if( img[0].size() == 0 )
+        throw runtime_error("The image is empty!");
+
+    ImageGris new_image = ImageGris(img.size());
+    for(int i = 0; i < new_image.size(); i++){
+        new_image[i] = vector<double>(img[i].size());
+    }
+
+    double biggest_number  = findTheBiggestNumber(img);
+    for(int i = 0; i < new_image.size(); i++){
+        for(int j = 0; j < new_image[i].size(); j++){
+            new_image[i][j] = ( (img[i][j] / biggest_number) * 255 );
+        }
+    }
+
+    return new_image;
 }
+
 
 void renormaliseTest() {
     CHECK( ImageGrisEgal(renormalise( imgGrisRenorm),
@@ -127,8 +131,25 @@ void renormaliseTest() {
  *  - du noir  si teinte > seuil
  **/
 ImageGris seuillage(ImageGris img, int seuil) {
-    // Remplacez cette ligne et la suivante par le code adéquat
-    throw runtime_error("Fonction seuillage non implantée ligne 131");
+    if( img.size() == 0 )
+        throw runtime_error("The image is empty!");
+    if( img[0].size() == 0 )
+        throw runtime_error("The image is empty!");
+
+    ImageGris new_image = ImageGris(img.size());
+    for(int i = 0; i < new_image.size(); i++){
+        new_image[i] = vector<double>(img[i].size());
+    }
+
+    double biggest_number  = findTheBiggestNumber(img);
+    for(int i = 0; i < new_image.size(); i++){
+        for(int j = 0; j < new_image[i].size(); j++){
+            new_image[i][j] = 
+                ( img[i][j] < seuil ) ? (255) : (0);
+        }
+    }
+
+    return new_image;
 }
 
 /// BEGIN doubleSeuillage
@@ -195,7 +216,7 @@ void seuillageTest() {
 
 
     // Remplacez cette ligne et la suivante par le code adéquat
-    throw runtime_error("code non implanté ligne 198");
+    // throw runtime_error("code non implanté ligne 198");
 
 }
 
@@ -217,9 +238,13 @@ void doubleSeuillageIteratifTest() {
 
 int main(){
     // Ajouter les appels aux fonctions de test nécessaire
-
+    // ecrirePGM(
+    //     renormalise(intensite(lirePGM("images/Willis.512.pgm" ))), 
+    //     "sobel/Willis.512.renornalise.pgm");
+    // renormaliseTest();
+    seuillageTest();
     // Remplacez cette ligne et la suivante par le code adéquat
-    throw runtime_error("code non implanté ligne 221");
+    // throw runtime_error("code non implanté ligne 221");
 
 
     return 0;
