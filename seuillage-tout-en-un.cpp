@@ -154,6 +154,10 @@ ImageGris seuillage(ImageGris img, int seuil) {
 
 /// BEGIN doubleSeuillage
 
+bool isPixelSelected(float pixel){
+    return pixel == 0;
+}
+
 /** Filtre de double seuillage
  * @param imgIntensite image d'intensite
  * @param imgContour image codant un ensemble de pixels selectionnes
@@ -163,8 +167,63 @@ ImageGris seuillage(ImageGris img, int seuil) {
  *  -sinon pixel blanc
  **/
 ImageGris doubleSeuillage(ImageGris imgIntensite, ImageGris imgContour, int seuil) {
-    // Remplacez cette ligne et la suivante par le code adéquat
-    throw runtime_error("Fonction doubleSeuillage non implantée ligne 146");
+    if( imgIntensite.size() == 0 || imgContour.size() == 0)
+        throw runtime_error("The image is empty!");
+    if( imgIntensite[0].size() == 0 || imgContour[0].size() == 0)
+        throw runtime_error("The image is empty!");
+    if(imgIntensite.size() != imgContour.size() || imgIntensite[0].size() != imgContour[0].size())
+        throw runtime_error("Two different images are given!");
+    ImageGris new_image = ImageGris(imgIntensite.size());
+    for(int i = 0; i < new_image.size(); i++){
+        new_image[i] = vector<double>(imgIntensite[i].size());
+    }
+
+    for(int i = 0; i < new_image.size(); i++){
+        for(int j = 0; j < new_image[i].size(); j++){
+
+            if(imgIntensite[i][j] < seuil){
+                new_image[i][j] = 255.0;
+                continue;
+            }
+            if(i > 0){
+                if( isPixelSelected(imgContour[i-1][j] ) ) {
+                    new_image[i][j] = 0;
+                    continue;
+                }
+            }
+            if(i < new_image.size() - 1){
+                if( isPixelSelected(imgContour[i+1][j] ) ) {
+                    new_image[i][j] = 0;
+                    continue;
+                }
+            }
+            if(j > 0){
+                if( isPixelSelected(imgContour[i][j-1] ) ) {
+                    new_image[i][j] = 0;
+                    continue;
+                }
+            }
+            if(j < new_image[i].size() - 1){
+                if( isPixelSelected(imgContour[i][j+1] ) ) {
+                    new_image[i][j] = 0;
+                    continue;
+                }
+            }
+
+            if(i > 0 && j > 0 && i < new_image.size() - 1 && j < new_image[i].size()){
+                if( isPixelSelected(imgContour[i-1][j-1]) || isPixelSelected(imgContour[i-1][j+1]) ||
+                     isPixelSelected(imgContour[i+1][j-1]) || isPixelSelected(imgContour[i+1][j+1]) ){
+                    new_image[i][j] = 0;
+                    continue;
+                }
+            }
+
+            new_image[i][j] = 255;
+            continue;
+
+        }
+    }
+    return new_image;
 }
 
 /// BEGIN doubleSeuillageIteratif
@@ -177,8 +236,13 @@ ImageGris doubleSeuillage(ImageGris imgIntensite, ImageGris imgContour, int seui
  * @return le double seuillage de img
  **/
 ImageGris doubleSeuillage(ImageGris imgIntensite, int seuilFort, int seuilFaible, int nbAmeliorations) {
-    // Remplacez cette ligne et la suivante par le code adéquat
-    throw runtime_error("Fonction doubleSeuillage non implantée ligne 160");
+    ImageGris new_image = seuillage(imgIntensite, seuilFort);
+
+    for(int n=0; n<nbAmeliorations; n++) {
+        new_image = doubleSeuillage(imgIntensite, new_image, seuilFaible);
+    }
+
+    return new_image;
 }
 
 
@@ -199,6 +263,7 @@ void seuillageTest() {
                   {255, 255, 255, 255}
               }),
               0.001) );
+
     CHECK( ImageGrisEgal(doubleSeuillage(intensite(imgGrisTest), 400, 80, 4 ),
                           ImageGris( {
                               {255, 255, 255, 255},
@@ -243,6 +308,8 @@ int main(){
     //     "sobel/Willis.512.renornalise.pgm");
     // renormaliseTest();
     seuillageTest();
+    doubleSeuillageTest();
+    doubleSeuillageIteratifTest();
     // Remplacez cette ligne et la suivante par le code adéquat
     // throw runtime_error("code non implanté ligne 221");
 
