@@ -79,6 +79,31 @@ ImageGris doubleSeuillage(ImageGris imgIntensite, ImageGris imgContour, int seui
         new_image[i] = vector<double>(imgIntensite[i].size());
     }
 
+
+    // for(int i = 0; i < new_image.size(); i++){
+    //     for(int j = 0; j < new_image[i].size(); j++){
+    //         if(j == 0 || j == new_image[i].size()-1)
+    //             new_image[i][j] = 255.0;
+    //         if(i == 0 || i == new_image.size()-1)
+    //             new_image[i][j] = 255.0;
+                
+    //         if(j == 0 || i == 0 || i == new_image.size() || j == new_image[i].size()){
+    //             continue;
+    //         }
+    //         // if(!isPixelSelected(imgContour[i][j]))
+    //         //     continue;
+    //         if( imgIntensite[i][j] >= seuil && (
+    //             isPixelSelected(imgContour[i][j-1]) || isPixelSelected(imgContour[i][j+1]) || 
+    //             isPixelSelected(imgContour[i-1][j]) || isPixelSelected(imgContour[i-1][j+1]) || isPixelSelected(imgContour[i-1][j-1]) ||
+    //             isPixelSelected(imgContour[i+1][j-1]) || isPixelSelected(imgContour[i+1][j-1]) || isPixelSelected(imgContour[i+1][j-1])
+    //             ) )
+    //         {
+    //             new_image[i][j] = 0.0;
+    //             continue;
+    //         }
+    //         new_image[i][j] = 255.0;
+    //     }
+    // }
     for(int i = 0; i < new_image.size(); i++){
         for(int j = 0; j < new_image[i].size(); j++){
 
@@ -86,8 +111,10 @@ ImageGris doubleSeuillage(ImageGris imgIntensite, ImageGris imgContour, int seui
                 new_image[i][j] = 255.0;
                 continue;
             }
-            if( !isPixelSelected(imgContour[i][j]) )
+            if( !isPixelSelected(imgContour[i][j]) ){
+                new_image[i][j] = 255.0;
                 continue;
+            }
             if(i > 0){
                 if( isPixelSelected(imgContour[i-1][j] ) ) {
                     new_image[i][j] = 0;
@@ -120,6 +147,10 @@ ImageGris doubleSeuillage(ImageGris imgIntensite, ImageGris imgContour, int seui
                     continue;
                 }
             }
+            // if(isPixelSelected(imgContour[i][j])){
+            //     new_image[i][j] = 0;
+            //     continue;
+            // }
 
             new_image[i][j] = 255;
             continue;
