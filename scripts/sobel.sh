@@ -1,1 +1,1 @@
-clang++ -std=c++11 -Wall ./iopgm/iopgm.cpp ./intensite/intensite.cpp sobel-tout-en-un.cpp -o ./build/sobel-tout-en-un && ./build/sobel-tout-en-un
+clang++ -std=c++11 -Wall ./iopgm/iopgm.cpp ./intensite/intensite.cpp ./sobel_lib/sobel.cpp sobel-test.cpp -o ./build/sobel-test && ./build/sobel-test
