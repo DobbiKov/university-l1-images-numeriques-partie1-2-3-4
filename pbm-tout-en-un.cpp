@@ -6,12 +6,10 @@
 #include <fstream>
 #include <vector>
 #include <stdexcept>
+
+#include "image.hpp"
 using namespace std;
 
-/// BEGIN ImageNB
-/** Structure de données pour représenter une image binaire **/
-typedef vector<vector<int> > ImageNB;
-/// END ImageNB
 
 /// BEGIN lirePBM
 

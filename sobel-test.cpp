@@ -1,25 +1,14 @@
-#include <stdexcept>
-/** @file
- * Filtres de Sobel
- **/
-#include <cmath>
-#include <vector>
-#include <stdexcept>
 #include <iostream>
-#include <fstream>
 
+#include "image.hpp"
 #include "iopgm/iopgm.hpp"
 #include "intensite/intensite.hpp"
+#include "sobel_lib/sobel.hpp"
+
 using namespace std;
-
-/** Structure de donnee pour representer une image en teintes de gris **/
-typedef vector<vector<double> > ImageGris;
-
-
 
 /** Infrastructure minimale de test **/
 #define CHECK(test) if (!(test)) cerr << "Test failed in file " << __FILE__ << " line " << __LINE__ << ": " #test << endl
-
 
 /** Une image 4x4 en teintes de gris pour faire des tests **/
 ImageGris imgGrisTest = {
@@ -28,35 +17,6 @@ ImageGris imgGrisTest = {
     {139.583, 172.841, 94.0878, 88.4974},
     {158.278, 172.841, 89.0236, 80.0384}
 };
-
-
-/** Teste si deux images en teintes de gris sont égales modulo imprécision numérique
- * En cas de différence un message est affiché
- * @param a une image en teintes de gris
- * @param b une image en teintes de gris
- * @param precision un flottant positif: la précision souhaitée; typiquement 0.001
- * @return vrai si les images sont égales et faux sinon
- **/
-bool ImageGrisEgal(ImageGris a, ImageGris b, float precision) {
-    if (a.size() != b.size())  {
-        cout << "Nombre de lignes différent" << endl;
-        return false;
-    }
-    for (int i=0; i<a[0].size(); i++)
-        if (a[0].size() != b[i].size()) {
-            cout << "Nombre de colonnes différent" << endl;
-            return false;
-        }
-    for (int i=0; i<a.size(); i++)
-        for (int j=0; j<a[0].size(); j++)
-            if (abs(a[i][j] - b[i][j]) > precision) {
-                cout << "Valeur differentes en position " << i << "," << j
-             << ": " << a[i][j] << " au lieu de " << b[i][j] << endl;
-                return false;
-            }
-    return true;
-}
-
 
 void testSobel() {
     CHECK( ImageGrisEgal(intensiteH(imgGrisTest),
@@ -99,4 +59,3 @@ int main(){
     testSobel();
     return 0 ;
 }
-
