@@ -163,6 +163,14 @@ ImageGris doubleSeuillage(ImageGris imgIntensite, ImageGris imgContour, int seui
 }
 
 ImageGris doubleSeuillage(ImageGris imgIntensite, int seuilFort, int seuilFaible, int nbAmeliorations) {
+    if( imgIntensite.size() == 0)
+        throw runtime_error("The image is empty!");
+    if( imgIntensite[0].size() == 0)
+        throw runtime_error("The image is empty!");
+    if(nbAmeliorations < 0){
+        throw runtime_error("The number of nbAmelioration must be positive!");
+    }
+
     ImageGris new_image = seuillage(imgIntensite, seuilFort);
 
     for(int n=0; n<nbAmeliorations; n++) {
