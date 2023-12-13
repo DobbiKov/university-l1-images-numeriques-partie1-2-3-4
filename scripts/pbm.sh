@@ -1,0 +1,1 @@
+clang++ -std=c++11 -Wall ./iopbm/iopbm.cpp pbm-test.cpp -o ./build/pbm-test && ./build/pbm-test

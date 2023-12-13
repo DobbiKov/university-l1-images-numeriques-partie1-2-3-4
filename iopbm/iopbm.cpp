@@ -5,11 +5,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <stdexcept>
 
-#include "image.hpp"
+#include "../image.hpp"
 using namespace std;
-
 
 /// BEGIN lirePBM
 
@@ -25,9 +23,8 @@ ImageNB lirePBM(string source) {
     
     string temp;
     //we don't wanna use first 2 lines with the information we don't need
-    for(int i = 0; i < 8; i++){
-        file >> temp;
-    }
+
+    file >> temp;
 
     int width, height;
     width = 0;
@@ -114,34 +111,3 @@ ImageNB inversePBM(ImageNB img) {
     }
     return img;
 }
-
-void testLirePBM(){
-    cout << "Vérifier que les images obtenues dans 'pbm/' sont semblables à celles fournies dans 'pbm/correction/'" << endl;
-    ecrirePBM(lirePBM("./images/smiley.pbm"),  "./pbm/smiley.pbm");
-    // ecrirePBM(lirePBM("./images/cercle.pbm"),  "./pbm/cercle.pbm");
-    // ecrirePBM(lirePBM("./images/code.pbm"), "./pbm/code.pbm");
-    // ecrirePBM(lirePBM("./images/damier.pbm"), "./pbm/damier.pbm");
-}
-
-void pbm_tout_en_un_test(){
-    ImageNB smiley = lirePBM("./images/smiley.pbm");
-    ImageNB smiley_inversed = inversePBM(smiley);
-
-    affichePBM(smiley);
-    cout << endl << endl;
-    affichePBM(smiley_inversed);
-
-    ecrirePBM(smiley_inversed,  "./pbm/inversed_smiley.pbm");
-
-    cout << "{" << endl;
-    for(auto ligne: smiley_inversed){
-        cout << "{";
-        for(int elem: ligne){
-            cout << elem << ", ";
-        }
-        cout << "},\n";
-    }
-    cout << "}" << endl;
-}
-
-
